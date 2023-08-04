@@ -8,12 +8,12 @@
             margin: 20px;
         }
         h1 {
-            text-align: left; /* Align the title to the left */
+            text-align: left;
         }
         label {
             display: block;
             margin-top: 10px;
-            text-align: left; /* Align the labels to the left */
+            text-align: left;
         }
         input[type="number"] {
             width: 100%;
@@ -24,7 +24,7 @@
         }
         button {
             display: block;
-            margin: 20px 0; /* Adjust the button's top and bottom margin */
+            margin: 20px 0;
             font-size: 20px;
             padding: 12px 30px;
             background-color: #007BFF;
@@ -93,9 +93,9 @@
             document.getElementById('output').innerHTML = `Final Grade: ${finalGrade.toFixed(2)}%<br>`;
 
             if (finalGrade >= 50) {
-                document.getElementById('output').innerHTML += "Congratulations! You PASSED MATH119 :D";
+                document.getElementById('output').innerHTML += "<br>*Congratulations!*<br><br>You PASSED MATH119 :D";
             } else {
-                document.getElementById('output').innerHTML += "You FAILED MATH119 :(";
+                document.getElementById('output').innerHTML += "<br>*Ouch!*<br><br>You FAILED MATH119 :(";
             }
         }
     </script>
