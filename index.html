@@ -5,74 +5,63 @@
 </head>
 <body>
     <h1>Grade Calculator</h1>
-    <label for="finalGrade">Final Grade:</label>
-    <input type="number" id="finalGrade">
-    <br><br>
-    <label for="test1">Test 1:</label>
-    <input type="number" id="test1">
+    <label for="test1">Test 1 (%):</label>
+    <input type="number" id="test1" min="0" max="100" oninput="calculate()">
     <br>
-    <label for="test2">Test 2:</label>
-    <input type="number" id="test2">
+    <label for="test2">Test 2 (%):</label>
+    <input type="number" id="test2" min="0" max="100" oninput="calculate()">
     <br>
-    <label for="test3">Test 3:</label>
-    <input type="number" id="test3">
+    <label for="test3">Test 3 (%):</label>
+    <input type="number" id="test3" min="0" max="100" oninput="calculate()">
     <br>
-    <label for="test4">Test 4:</label>
-    <input type="number" id="test4">
+    <label for="test4">Test 4 (%):</label>
+    <input type="number" id="test4" min="0" max="100" oninput="calculate()">
     <br><br>
-    <button onclick="calculateFinalGrade()">Calculate Final Grade</button>
-    <button onclick="calculateRemainingScores()">Calculate Remaining Scores</button>
+    <label for="finalGrade">Final Wanted Grade (%):</label>
+    <input type="number" id="finalGrade" min="0" max="100" oninput="calculate()">
     <br><br>
-    <p id="output"></p>
+    <button onclick="calculate()">Calculate</button>
+    <br><br>
+    <div id="output"></div>
 
     <script>
-        function calculateFinalGrade() {
-            const test1 = parseFloat(document.getElementById('test1').value);
-            const test2 = parseFloat(document.getElementById('test2').value);
-            const test3 = parseFloat(document.getElementById('test3').value);
-            const test4 = parseFloat(document.getElementById('test4').value);
+        function calculate() {
+            const test1 = parseFloat(document.getElementById('test1').value) || 0;
+            const test2 = parseFloat(document.getElementById('test2').value) || 0;
+            const test3 = parseFloat(document.getElementById('test3').value) || 0;
+            const test4 = parseFloat(document.getElementById('test4').value) || 0;
+            const finalGradeWanted = parseFloat(document.getElementById('finalGrade').value);
 
-            if (isNaN(test1) || isNaN(test2) || isNaN(test3) || isNaN(test4)) {
-                alert("Please enter valid test scores.");
-                return;
+            const totalWeight = 0.25 + 0.3 + 0.25 + 0.2;
+            const maxIndividualTestScore = 100 / totalWeight;
+
+            let finalGrade;
+            let output = '';
+
+            if (finalGradeWanted) {
+                const totalScore = test1 + test2 + test3 + test4;
+                const remainingScore = finalGradeWanted / 100 * totalWeight - totalScore;
+                
+                if (remainingScore <= 0) {
+                    finalGrade = totalScore / totalWeight * 100;
+                    output = `Final Grade with Maximum Scores: ${finalGrade.toFixed(2)}%\n`;
+                } else {
+                    const possibleScore = maxIndividualTestScore - test1 - test2 - test3 - test4;
+                    if (remainingScore <= possibleScore) {
+                        finalGrade = (totalScore + remainingScore) / totalWeight * 100;
+                        output = `To achieve ${finalGradeWanted}%, you need to get at least ${remainingScore.toFixed(2)}% in the remaining test(s).\n`;
+                        output += `Final Grade with Maximum Scores: ${finalGrade.toFixed(2)}%\n`;
+                    } else {
+                        output = `It is not possible to achieve ${finalGradeWanted}% in the final grade.\n`;
+                        output += `Final Grade with Maximum Scores: ${maxIndividualTestScore.toFixed(2)}%\n`;
+                    }
+                }
+            } else {
+                finalGrade = (test1 + test2 + test3 + test4) / totalWeight * 100;
+                output = `Final Grade with Maximum Scores: ${finalGrade.toFixed(2)}%\n`;
             }
 
-            const finalGrade = 0.25 * test1 + 0.3 * test2 + 0.25 * test3 + 0.2 * test4;
-            document.getElementById('output').innerHTML = `Final Grade: ${finalGrade.toFixed(2)}`;
-        }
-
-        function calculateRemainingScores() {
-            const finalGrade = parseFloat(document.getElementById('finalGrade').value);
-
-            if (isNaN(finalGrade) || finalGrade < 0 || finalGrade > 100) {
-                alert("Please enter a valid final grade (0 to 100).");
-                return;
-            }
-
-            const remainingScore1 = (finalGrade - 0.3 * parseFloat(document.getElementById('test2').value) - 0.25 * parseFloat(document.getElementById('test3').value) - 0.2 * parseFloat(document.getElementById('test4').value)) / 0.25;
-            const remainingScore2 = (finalGrade - 0.25 * parseFloat(document.getElementById('test1').value) - 0.25 * parseFloat(document.getElementById('test3').value) - 0.2 * parseFloat(document.getElementById('test4').value)) / 0.3;
-            const remainingScore3 = (finalGrade - 0.25 * parseFloat(document.getElementById('test1').value) - 0.3 * parseFloat(document.getElementById('test2').value) - 0.2 * parseFloat(document.getElementById('test4').value)) / 0.25;
-            const remainingScore4 = (finalGrade - 0.25 * parseFloat(document.getElementById('test1').value) - 0.3 * parseFloat(document.getElementById('test2').value) - 0.25 * parseFloat(document.getElementById('test3').value)) / 0.2;
-
-            let message = "Remaining Scores:\n";
-
-            if (!isNaN(remainingScore1) && remainingScore1 >= 0) {
-                message += `Test 1: ${remainingScore1.toFixed(2)}\n`;
-            }
-
-            if (!isNaN(remainingScore2) && remainingScore2 >= 0) {
-                message += `Test 2: ${remainingScore2.toFixed(2)}\n`;
-            }
-
-            if (!isNaN(remainingScore3) && remainingScore3 >= 0) {
-                message += `Test 3: ${remainingScore3.toFixed(2)}\n`;
-            }
-
-            if (!isNaN(remainingScore4) && remainingScore4 >= 0) {
-                message += `Test 4: ${remainingScore4.toFixed(2)}\n`;
-            }
-
-            document.getElementById('output').innerHTML = message;
+            document.getElementById('output').innerHTML = output;
         }
     </script>
 </body>
