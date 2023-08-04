@@ -23,13 +23,21 @@
             display: block;
             margin: 20px auto;
             font-size: 20px;
-            padding: 10px 20px;
+            padding: 12px 30px;
             background-color: #007BFF;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
         }
+
+        /* Vendor-specific rule for Safari */
+        @media not all and (min-resolution:.001dpcm) { @media {
+            button {
+                padding: 14px 30px;
+            }
+        }}
+
         #output {
             margin-top: 20px;
         }
