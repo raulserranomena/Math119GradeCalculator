@@ -1,28 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Grade Calculator</title>
+    <title>MATH 119 Grade Calculator</title>
 </head>
 <body>
-    <h1>Grade Calculator</h1>
+    <h1>MATH 119 Grade Calculator</h1>
     <label for="test1">Test 1 (%):</label>
-    <input type="number" id="test1" min="0" max="100" oninput="calculate()">
+    <input type="number" id="test1" min="0" max="100">
     <br>
     <label for="test2">Test 2 (%):</label>
-    <input type="number" id="test2" min="0" max="100" oninput="calculate()">
+    <input type="number" id="test2" min="0" max="100">
     <br>
     <label for="test3">Test 3 (%):</label>
-    <input type="number" id="test3" min="0" max="100" oninput="calculate()">
+    <input type="number" id="test3" min="0" max="100">
     <br>
     <label for="test4">Test 4 (%):</label>
-    <input type="number" id="test4" min="0" max="100" oninput="calculate()">
-    <br><br>
-    <label for="finalGrade">Final Wanted Grade (%):</label>
-    <input type="number" id="finalGrade" min="0" max="100" oninput="calculate()">
+    <input type="number" id="test4" min="0" max="100">
     <br><br>
     <button onclick="calculate()">Calculate</button>
     <br><br>
-    <div id="output"></div>
+    <p id="output"></p>
 
     <script>
         function calculate() {
@@ -30,38 +27,37 @@
             const test2 = parseFloat(document.getElementById('test2').value) || 0;
             const test3 = parseFloat(document.getElementById('test3').value) || 0;
             const test4 = parseFloat(document.getElementById('test4').value) || 0;
-            const finalGradeWanted = parseFloat(document.getElementById('finalGrade').value);
 
-            const totalWeight = 0.25 + 0.3 + 0.25 + 0.2;
-            const maxIndividualTestScore = 100 / totalWeight;
+            const invalidScores = [test1, test2, test3, test4].filter(score => score > 100);
 
-            let finalGrade;
-            let output = '';
-
-            if (finalGradeWanted) {
-                const totalScore = test1 + test2 + test3 + test4;
-                const remainingScore = finalGradeWanted / 100 * totalWeight - totalScore;
-                
-                if (remainingScore <= 0) {
-                    finalGrade = totalScore / totalWeight * 100;
-                    output = `Final Grade with Maximum Scores: ${finalGrade.toFixed(2)}%\n`;
-                } else {
-                    const possibleScore = maxIndividualTestScore - test1 - test2 - test3 - test4;
-                    if (remainingScore <= possibleScore) {
-                        finalGrade = (totalScore + remainingScore) / totalWeight * 100;
-                        output = `To achieve ${finalGradeWanted}%, you need to get at least ${remainingScore.toFixed(2)}% in the remaining test(s).\n`;
-                        output += `Final Grade with Maximum Scores: ${finalGrade.toFixed(2)}%\n`;
-                    } else {
-                        output = `It is not possible to achieve ${finalGradeWanted}% in the final grade.\n`;
-                        output += `Final Grade with Maximum Scores: ${maxIndividualTestScore.toFixed(2)}%\n`;
-                    }
-                }
-            } else {
-                finalGrade = (test1 + test2 + test3 + test4) / totalWeight * 100;
-                output = `Final Grade with Maximum Scores: ${finalGrade.toFixed(2)}%\n`;
+            if (invalidScores.length > 0) {
+                document.getElementById('output').innerHTML = "Test scores cannot be more than 100%.";
+                return;
             }
 
-            document.getElementById('output').innerHTML = output;
+            const validTest1 = Math.min(100, test1);
+            const validTest2 = Math.min(100, test2);
+            const validTest3 = Math.min(100, test3);
+            const validTest4 = Math.min(100, test4);
+
+            const weights = {
+                test1: 0.25,
+                test2: 0.3,
+                test3: 0.25,
+                test4: 0.2
+            };
+            
+            const totalWeight = weights.test1 + weights.test2 + weights.test3 + weights.test4;
+
+            const finalGrade = ((validTest1 * weights.test1) + (validTest2 * weights.test2) + (validTest3 * weights.test3) + (validTest4 * weights.test4)) / totalWeight;
+
+            document.getElementById('output').innerHTML = `Final Grade: ${finalGrade.toFixed(2)}%\n`;
+
+            if (finalGrade >= 50) {
+                document.getElementById('output').innerHTML += "Congratulations! You PASSED MATH119 :D\n";
+            } else {
+                document.getElementById('output').innerHTML += "You FAILED MATH119 :(\n";
+            }
         }
     </script>
 </body>
