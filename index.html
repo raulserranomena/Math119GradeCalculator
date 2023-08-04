@@ -2,23 +2,43 @@
 <html>
 <head>
     <title>MATH 119 Grade Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input[type="number"] {
+            width: 100%;
+            max-width: 200px;
+            box-sizing: border-box;
+        }
+        button {
+            display: block;
+            margin: 20px auto;
+        }
+        #output {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
     <h1>MATH 119 Grade Calculator</h1>
     <label for="test1">Test 1 (%):</label>
     <input type="number" id="test1" min="0" max="100">
-    <br>
     <label for="test2">Test 2 (%):</label>
     <input type="number" id="test2" min="0" max="100">
-    <br>
     <label for="test3">Test 3 (%):</label>
     <input type="number" id="test3" min="0" max="100">
-    <br>
     <label for="test4">Test 4 (%):</label>
     <input type="number" id="test4" min="0" max="100">
-    <br><br>
     <button onclick="calculate()">Calculate</button>
-    <br><br>
     <p id="output"></p>
 
     <script>
@@ -51,12 +71,12 @@
 
             const finalGrade = ((validTest1 * weights.test1) + (validTest2 * weights.test2) + (validTest3 * weights.test3) + (validTest4 * weights.test4)) / totalWeight;
 
-            document.getElementById('output').innerHTML = `Final Grade: ${finalGrade.toFixed(2)}%\n`;
+            document.getElementById('output').innerHTML = `Final Grade: ${finalGrade.toFixed(2)}%<br>`;
 
             if (finalGrade >= 50) {
-                document.getElementById('output').innerHTML += "Congratulations! You PASSED MATH119 :D\n";
+                document.getElementById('output').innerHTML += "Congratulations! You PASSED MATH119 :D";
             } else {
-                document.getElementById('output').innerHTML += "You FAILED MATH119 :(\n";
+                document.getElementById('output').innerHTML += "You FAILED MATH119 :(";
             }
         }
     </script>
